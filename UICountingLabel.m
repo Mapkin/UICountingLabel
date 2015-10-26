@@ -202,7 +202,16 @@
         }
         else
         {
-            self.text = [NSString stringWithFormat:self.format,value];
+            NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init] ;
+            [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+            if ([self.format isEqualToString:@"%.f"]) {
+                numberFormatter.maximumFractionDigits = 0;
+            } else if ([self.format isEqualToString:@"%.1f"]) {
+                numberFormatter.maximumFractionDigits = 1;
+            }
+            
+            NSString *numberAsString = [[numberFormatter stringFromNumber:[NSNumber numberWithFloat:value]] stringByReplacingOccurrencesOfString:numberFormatter.currencySymbol withString:@""];
+            self.text = numberAsString;
         }
     }
 }
